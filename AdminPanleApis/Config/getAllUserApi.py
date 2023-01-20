@@ -152,7 +152,8 @@ def order_details(invoice):
         print(invoice)
     
         # cursor.execute("SELECT * FROM order_details WHERE id_orders = %s", invoice)
-        cursor.execute("SELECT order_details.*, product.name,product.image FROM order_details JOIN product on order_details.id_product = product.id_product WHERE order_details.invoice = '%s' LIMIT 5",invoice)
+        # cursor.execute("SELECT order_details.*, product.name,product.image FROM order_details JOIN product on order_details.id_product = product.id_product WHERE order_details.invoice = '%s' LIMIT 5",invoice)
+        cursor.execute("SELECT a.*, b.name, b.image, c.status From order_details as a JOIN product as b ON a.id_product = b.id_product JOIN orders as c ON a.id_orders = c.id_orders WHERE a.invoice = '%s'",invoice)
 
         medicienAt = cursor.fetchall()
         if(medicienAt):
