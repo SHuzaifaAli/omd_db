@@ -62,4 +62,3 @@ python
 ![image](https://user-images.githubusercontent.com/37245187/210079651-96634889-9873-4a8a-9fd8-2fadac86f41c.png)
 ![image](https://user-images.githubusercontent.com/37245187/210079675-2b4ac27a-b74c-4d09-a8fb-d86de0dbcba7.png)
 ![image](https://user-images.githubusercontent.com/37245187/210079714-16628616-a1d6-4a97-adcf-22ed1ab92de1.png)
-![image](https://user-images.githubusercontent.com/37245187/210079741-6bd60f62-6ae5-421e-8f06-50cfb97fcbe6.png)
