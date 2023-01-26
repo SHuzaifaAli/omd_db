@@ -32,6 +32,17 @@ from flask import flash, request
 #################################
 #####       USERS       #########
 #################################  
+
+@app.route('/')
+def default_work():
+        response = jsonify({'code':1,'message':"Working Ok","response":[]})
+        return response
+        
+
+
+
+
+
 @app.route('/allUsers')
 def users():
     try:
@@ -176,32 +187,33 @@ def order_details(invoice):
 ##################################################
 ##################################################
 
-@app.route('/updateMed', methods=['PUT'])
-def update_med():
+@app.route('/updateOrder', methods=['PUT'])
+def update_order_status():
     try:
-        _json = request.json
+        connection = mysql.connect()
+        print("Abc ")
+        cursor = connection.cursor()
+        print("bc ")
+        _json = request.get_json()
+        print(_json)
         _id = _json['id']
-        _name = _json['name']
-        _description = _json['description']
-        _price = _json['price']
-        _status = _json['status']
-        if _name and _description and _price and _status and _id and request.method == 'PUT':			
-            sqlQuery = "UPDATE product SET name=%s, description=%s, price=%s, status=%s WHERE id=%s"
-            bindData = (_name, _description, _price, _status, _id,)
-            conn = mysql.connect()
-            cursor = conn.cursor()
-            cursor.execute(sqlQuery, bindData)
-            conn.commit()
-            respone = jsonify('Medicine updated successfully!')
-            respone.status_code = 200
-            return respone
-        else:
-            return showMessage()
+        print(_id)
+        if _id and request.method == 'PUT':
+            print("in if")			
+            # sqlQuery = "UPDATE orders SET status= '1' WHERE orders.id_orders = %s"
+            cursor.execute("UPDATE orders SET status='1' WHERE orders.id_orders = %s",(_id,))
+            print("Commiting")
+            connection.commit()
     except Exception as e:
         print(e)
+        return {'code':0,"message": "Update was not successful","response":"Error: "+e}, 500
     finally:
         cursor.close() 
-        conn.close() 
+        connection.close()
+        return {'code':1,"message": "Update successful","response":"Success"}, 201
+        
+        
+
 
 @app.route('/delete/', methods=['DELETE'])
 def delete_med(id):
@@ -210,9 +222,7 @@ def delete_med(id):
 		cursor = conn.cursor()
 		cursor.execute("DELETE FROM product WHERE id =%s", (id,))
 		conn.commit()
-		respone = jsonify('Employee deleted successfully!')
-		respone.status_code = 200
-		return respone
+		return {"message": "'Employee deleted successfully!"}, 201
 	except Exception as e:
 		print(e)
 	finally:
@@ -231,4 +241,4 @@ def showMessage(error=None):
     return respone
         
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
